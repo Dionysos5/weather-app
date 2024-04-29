@@ -9,6 +9,10 @@ This project is designed as a learning exercise to explore Python programming. I
 - **Get Current Weather**: Users can retrieve the current weather conditions for any specified city.
 - **Get Weather Forecast**: Users can also obtain weather forecasts for a city, including future temperature and weather conditions.
 
+## Future Features
+
+- **Fuzzy Search**: Implement fuzzy search for city names if the city is not found and let user select a city.
+
 ## Getting Started
 
 To use this application, follow these steps:
