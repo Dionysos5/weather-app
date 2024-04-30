@@ -27,17 +27,32 @@ class OpenWeatherMapAPI:
 
     def get_lat_lon(self, city: str):
         data = self.api_request.make_request(self.geo_endpoint, {"q": city, "limit": 1})[0]
-        return {"lat": data["lat"], "lon": data["lon"]}
+        return  data["lat"],data["lon"]
     
-    def get_five_day_forecast(self, lat:float, lon:float):
-        nb_timestamps = 8
-        data = self.api_request.make_request(self.forecast_endpoint, {"lat": lat, "lon": lon, "cnt": nb_timestamps, "units": "metric", "lang": "fr"})
-        # Extract the hourly forecast information
-        hourly_forecast = []
+    def get_five_day_forecast(self, city: str):
+        nb_timestamps = 24
+        lat, lon = self.get_lat_lon(city)
+
+        data = self.api_request.make_request(self.forecast_endpoint, {"lat": lat, "lon": lon, "cnt": nb_timestamps, "units": "metric"})
+
+        daily_forecast = {} 
+
         for forecast in data["list"]:
-            hourly_forecast.append({
-                "time": datetime.fromtimestamp(forecast["dt"]).strftime("%Y-%m-%d %H:%M:%S"),
-                "temperature": forecast["main"]["temp"],
+            date = datetime.fromtimestamp(forecast["dt"]).date() 
+            if date not in daily_forecast:
+                daily_forecast[date] = [] 
+
+            daily_forecast[date].append({
+                "time": datetime.fromtimestamp(forecast["dt"]).strftime("%H"),
+                "temperature": "{:>5}".format(round(forecast["main"]["temp"])),
                 "description": forecast["weather"][0]["description"],
             })
-        return hourly_forecast
+
+        formatted_forecast = []
+        for date, forecasts in daily_forecast.items():
+            formatted_forecast.append({
+                "date": date.strftime("%a %d %b"),
+                "forecast": forecasts,
+            })
+
+        return formatted_forecast

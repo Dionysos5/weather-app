@@ -44,8 +44,8 @@ To use this application, follow these steps:
    - Add the following content to the .env file:
 
    ```bash
-   API_BASE_URL=https://api.openweathermap.org/data/2.5
-   OPENWEATHER_API_KEY=your_api_key_here
+   OPENWEATHERMAP_API_BASE_URL=https://api.openweathermap.org/data/2.5
+   OPENWEATHERMAP_API_KEY=your_api_key_here
    ```
 
    Replace `your_api_key_here` with your actual OpenWeatherMap API key, which you can obtain by registering on the OpenWeatherMap website.
