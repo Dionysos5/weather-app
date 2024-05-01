@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 from api_request import APIRequest
+from condition_codes import ConditionCodes
 
 load_dotenv()
 
@@ -30,6 +31,8 @@ class OpenWeatherMapAPI:
         return  data["lat"],data["lon"]
     
     def get_five_day_forecast(self, city: str):
+        condition_codes = ConditionCodes()
+
         nb_timestamps = 24
         lat, lon = self.get_lat_lon(city)
 
@@ -41,11 +44,10 @@ class OpenWeatherMapAPI:
             date = datetime.fromtimestamp(forecast["dt"]).date() 
             if date not in daily_forecast:
                 daily_forecast[date] = [] 
-
             daily_forecast[date].append({
                 "time": datetime.fromtimestamp(forecast["dt"]).strftime("%H"),
                 "temperature": "{:>5}".format(round(forecast["main"]["temp"])),
-                "description": forecast["weather"][0]["description"],
+                "description": f"{condition_codes.get_condition(forecast["weather"][0]["id"])}  {forecast['weather'][0]['description']}",
             })
 
         formatted_forecast = []
@@ -56,3 +58,4 @@ class OpenWeatherMapAPI:
             })
 
         return formatted_forecast
+    
