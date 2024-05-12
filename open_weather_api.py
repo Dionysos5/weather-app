@@ -30,10 +30,10 @@ class OpenWeatherMapAPI:
         data = self.api_request.make_request(self.geo_endpoint, {"q": city, "limit": 1})[0]
         return  data["lat"],data["lon"]
     
-    def get_five_day_forecast(self, city: str):
+    def get_forecast(self, city: str, days: int = 1):
         condition_codes = ConditionCodes()
 
-        nb_timestamps = 24
+        nb_timestamps = days * 8
         lat, lon = self.get_lat_lon(city)
 
         data = self.api_request.make_request(self.forecast_endpoint, {"lat": lat, "lon": lon, "cnt": nb_timestamps, "units": "metric"})

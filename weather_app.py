@@ -14,9 +14,9 @@ def main():
         weather_data = api.get_weather(city)
         print(f"Weather in {city}:")
         print(f"{weather_data['temperature']}°C with {weather_data['description']}")
-        see_hourly = input("Would you like to see the forecast? (y/n): ")
-        if see_hourly.lower() == "y":
-            response = api.get_five_day_forecast(city)
+        see_forecast = input("Would you like to see the forecast? (y/n): ")
+        if see_forecast.lower() == "y":
+            response = api.get_forecast(city)
             print("-----------------")
             for day in response:
                 print(f"{day['date']}")
